@@ -4,13 +4,9 @@ Shurl (Short-Url) is a simple command-line URL shortener written in Rust, using 
 
 Built as a learning project to explore Rust and CLI tooling.
 
----
-
 ## Requirements
 
 - [Rust](https://rustup.rs) (installed via `rustup`)
-
----
 
 ## Installation
 
@@ -23,8 +19,6 @@ cargo install --path .
 ```
 
 This will build a release binary and place it in `~/.cargo/bin/`, making it available system-wide.
-
----
 
 ## Usage
 
@@ -51,8 +45,6 @@ shurl https://www.example.com
 |--------------|-------------------|
 | `-h, --help` | Print help text   |
 
----
-
 ## Validation
 
 The shurl command validates input before hitting the API. The URL must:
@@ -60,8 +52,6 @@ The shurl command validates input before hitting the API. The URL must:
 - Be non-empty
 - Include a scheme (`http://` or `https://`)
 - Be a valid, parseable URL
-
----
 
 ## Project Structure
 
@@ -73,8 +63,6 @@ src/
 └── validator.rs   # URL validation
 ```
 
----
-
 ## Dependencies
 
 | Crate         | Purpose                              |
@@ -84,8 +72,6 @@ src/
 | `serde`       | Serialization / deserialization      |
 | `serde_json`  | JSON support                         |
 | `url`         | URL parsing and validation           |
-
----
 
 ## License
 
