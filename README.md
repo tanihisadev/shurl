@@ -61,6 +61,7 @@ src/
 ├── main.rs        # Entry point
 ├── cli.rs         # CLI argument definitions (clap)
 ├── shortener.rs   # HTTP logic and API call
+├── embedders.rs   # Embed domains
 └── validator.rs   # URL validation
 ```
 
