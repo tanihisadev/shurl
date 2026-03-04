@@ -41,9 +41,10 @@ shurl https://www.example.com
 
 ### Flags
 
-| Flag         | Description       |
-|--------------|-------------------|
-| `-h, --help` | Print help text   |
+| Flag         | Description                                                                        |
+|--------------|------------------------------------------------------------------------------------|
+| `-h, --help` | Print help text                                                                    |
+| `--embed`    | Uses known alternative domains to give a URL you can embed in places like Discord  |
 
 ## Validation
 

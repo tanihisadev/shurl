@@ -8,4 +8,9 @@ use clap::Parser;
 pub struct Cli {
     /// The URL to shorten.
     pub url: String,
+
+    /// Replace the domain with an embed friendly alternative (skips shortening, to allow embed  to still function)
+    #[arg(short, long)]
+    pub embed: bool,
 }
+

@@ -15,3 +15,4 @@ pub fn shorten(url: &str) -> Result<String, Box<dyn std::error::Error>> {
 
     Ok(response.shorturl)
 }
+
