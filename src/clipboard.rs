@@ -1,5 +1,8 @@
 use arboard::Clipboard;
 
+#[cfg(target_os = "linux")]
+use arboard::SetExtLinux;
+
 #[derive(Debug)]
 pub enum ClipboardError {
     Failed(String),
@@ -16,7 +19,18 @@ impl std::fmt::Display for ClipboardError {
 pub fn copy_to_clipboard(text: &str) -> Result<(), ClipboardError> {
     let mut clipboard = Clipboard::new().map_err(|e| ClipboardError::Failed(e.to_string()))?;
 
-    clipboard.set_text(text).map_err(|e| ClipboardError::Failed(e.to_string()))?;
+    // Process needs to stay alive longer on linux
+    #[cfg(target_os = "linux")]
+    clipboard
+        .set()
+        .wait()
+        .text(text.to_string())
+        .map_err(|e| ClipboardError::Failed(e.to_string()))?;
+
+    #[cfg(not(target_os = "linux"))]
+    clipboard
+        .set_text(text)
+        .map_err(|e| ClipboardError::Failed(e.to_string()))?;
 
     Ok(())
 }
