@@ -23,7 +23,7 @@ This will build a release binary and place it in `~/.cargo/bin/`, making it avai
 ## Usage
 
 ```bash
-shurl <URL>
+shurl <URL> [FLAGS]
 ```
 
 ### Example
@@ -31,51 +31,83 @@ shurl <URL>
 ```bash
 shurl https://www.example.com
 # Shortened URL: https://is.gd/abc123
+# Copied to clipboard!
 ```
 
 ### Arguments
 
-| Argument | Description                  | Required |
-|----------|------------------------------|----------|
-| `URL`    | The full URL to shorten      | Yes      |
+| Argument | Description             | Required |
+|----------|-------------------------|----------|
+| `URL`    | The full URL to shorten | Yes      |
 
 ### Flags
 
-| Flag         | Description                                                                        |
-|--------------|------------------------------------------------------------------------------------|
-| `-h, --help` | Print help text                                                                    |
-| `--embed`    | Uses known alternative domains to give a URL you can embed in places like Discord  |
-| `--clean`    | Cleans the URL of common tracking parameters before shortening it                  |
+| Flag            | Description                                                               |
+|-----------------|---------------------------------------------------------------------------|
+| `-e, --embed`   | Replaces the domain with an embed-friendly alternative (skips shortening) |
+| `-c, --clean`   | Strips known tracking parameters from the URL before shortening           |
+| `--no-copy`     | Disables automatic copying of the result to the clipboard                 |
+| `-V, --version` | Print version                                                             |
+| `-h, --help`    | Print help text                                                           |
 
+## Clipboard
 
-## Validation
+By default, Shurl automatically copies the result to your clipboard after shortening or embedding. To disable this behaviour, use the `--no-copy` flag:
 
-The shurl command validates input before hitting the API. The URL must:
+```bash
+shurl --no-copy https://www.example.com
+```
 
-- Be non-empty
-- Include a scheme (`http://` or `https://`)
-- Be a valid, parseable URL
+## Embed Domains
+
+The `--embed` flag replaces known domains with embed-friendly alternatives, useful for platforms like Discord where certain links do not preview correctly.
+
+| Original        | Replacement      |
+|-----------------|------------------|
+| `instagram.com` | `kkinstagram.com`|
+| `x.com`         | `fxtwitter.com`  |
+| `twitter.com`   | `fxtwitter.com`  |
+| `reddit.com`    | `rxddit.com`     |
+
+Note: shortening is skipped when `--embed` is used, as shortened URLs prevent platforms from generating a preview.
+
+## Tracking Parameters
+
+The `--clean` flag strips known tracking parameters from the URL before shortening. Recognised parameters include:
+
+| Parameter                                                             | Source          |
+|-----------------------------------------------------------------------|-----------------|
+| `igsh`, `igshid`                                                      | Instagram       |
+| `si`, `is`                                                            | YouTube         |
+| `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content` | Universal UTM   |
+| `fbclid`                                                              | Meta / Facebook |
+| `gclid`, `gclsrc`                                                     | Google          |
+| `ref_src`, `ref_url`                                                  | Twitter         |
+| `ref`                                                                 | Generic         |
 
 ## Project Structure
 
 ```
 src/
-├── main.rs        # Entry point
+├── main.rs        # Entry point, wires everything together
 ├── cli.rs         # CLI argument definitions (clap)
 ├── shortener.rs   # HTTP logic and API call
-├── embedders.rs   # Embed domains
+├── embedder.rs    # Embed-friendly domain substitution (--embed)
+├── stripper.rs    # Tracking parameter removal (--clean)
+├── clipboard.rs   # Clipboard support
 └── validator.rs   # URL validation
 ```
 
 ## Dependencies
 
-| Crate         | Purpose                              |
-|---------------|--------------------------------------|
-| `clap`        | CLI argument parsing                 |
-| `reqwest`     | HTTP client                          |
-| `serde`       | Serialization / deserialization      |
-| `serde_json`  | JSON support                         |
-| `url`         | URL parsing and validation           |
+| Crate        | Purpose                         |
+|--------------|---------------------------------|
+| `clap`       | CLI argument parsing            |
+| `reqwest`    | HTTP client                     |
+| `serde`      | Serialization / deserialization |
+| `serde_json` | JSON support                    |
+| `url`        | URL parsing and validation      |
+| `arboard`    | Clipboard support               |
 
 ## License
 
