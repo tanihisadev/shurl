@@ -1,4 +1,5 @@
 mod cli;
+mod embedder;
 mod clipboard;
 mod shortener;
 mod validator;
@@ -28,6 +29,18 @@ fn main() {
         }
     };
 
+    let url = if args.embed {
+        match embedder::embed_url(&url) {
+            Ok(embedded) => {
+                println!("Embed URL: {}", embedded);
+                embedded
+            }
+            Err(e) => {
+                eprintln!("Error: {}", e);
+                std::process::exit(1);
+            }
+        }
+      
     let url = if args.clean {
         match stripper::strip_tracking(&url) {
             Ok(cleaned) => {
@@ -44,6 +57,10 @@ fn main() {
     else {
         url
     };
+
+    if args.embed {
+        return;
+    }
 
     match shortener::shorten(&url) {
         Ok(short) => output("Shortened URL:", &short, args.no_copy),

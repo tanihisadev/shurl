@@ -41,10 +41,11 @@ shurl https://www.example.com
 
 ### Flags
 
-| Flag         | Description                                                         |
-|--------------|---------------------------------------------------------------------|
-| `-h, --help` | Print help text                                                     |
-| `--clean`    | Cleans the URL of common tracking parameters before shortening it   |
+| Flag         | Description                                                                        |
+|--------------|------------------------------------------------------------------------------------|
+| `-h, --help` | Print help text                                                                    |
+| `--embed`    | Uses known alternative domains to give a URL you can embed in places like Discord  |
+| `--clean`    | Cleans the URL of common tracking parameters before shortening it                  |
 
 
 ## Validation
@@ -62,6 +63,7 @@ src/
 ├── main.rs        # Entry point
 ├── cli.rs         # CLI argument definitions (clap)
 ├── shortener.rs   # HTTP logic and API call
+├── embedders.rs   # Embed domains
 └── validator.rs   # URL validation
 ```
 
