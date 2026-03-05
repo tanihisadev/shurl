@@ -1,9 +1,9 @@
 mod cli;
-mod embedder;
 mod clipboard;
+mod embedder;
 mod shortener;
-mod validator;
 mod stripper;
+mod validator;
 
 use clap::Parser;
 use cli::Cli;
@@ -13,7 +13,7 @@ fn output(label: &str, url: &str, no_copy: bool) {
     if !no_copy {
         match clipboard::copy_to_clipboard(url) {
             Ok(_) => println!("Copied to clipboard!"),
-            Err(e) => println!("{}", e),
+            Err(e) => eprintln!("{}", e),
         }
     }
 }
@@ -29,18 +29,6 @@ fn main() {
         }
     };
 
-    let url = if args.embed {
-        match embedder::embed_url(&url) {
-            Ok(embedded) => {
-                println!("Embed URL: {}", embedded);
-                embedded
-            }
-            Err(e) => {
-                eprintln!("Error: {}", e);
-                std::process::exit(1);
-            }
-        }
-      
     let url = if args.clean {
         match stripper::strip_tracking(&url) {
             Ok(cleaned) => {
@@ -52,19 +40,29 @@ fn main() {
                 std::process::exit(1);
             }
         }
+    } else {
+        url
+    };
 
-    }
-    else {
+    let url = if args.embed {
+        match embedder::embed_url(&url) {
+            Ok(embedded) => embedded,
+            Err(e) => {
+                eprintln!("Error: {}", e);
+                std::process::exit(1);
+            }
+        }
+    } else {
         url
     };
 
     if args.embed {
+        output("Embed URL copied to clipboard", &url, args.no_copy);
         return;
     }
 
     match shortener::shorten(&url) {
-        Ok(short) => output("Shortened URL:", &short, args.no_copy),
+        Ok(short) => output("Shortened URL", &short, args.no_copy),
         Err(e) => eprintln!("Error: {}", e),
     }
 }
-
