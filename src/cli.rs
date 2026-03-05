@@ -8,4 +8,8 @@ use clap::Parser;
 pub struct Cli {
     /// The URL to shorten.
     pub url: String,
+
+    /// Do no copy the result to the clipboard
+    #[arg(long)]
+    pub no_copy: bool,
 }
