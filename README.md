@@ -45,6 +45,8 @@ shurl https://www.example.com
 |--------------|------------------------------------------------------------------------------------|
 | `-h, --help` | Print help text                                                                    |
 | `--embed`    | Uses known alternative domains to give a URL you can embed in places like Discord  |
+| `--clean`    | Cleans the URL of common tracking parameters before shortening it                  |
+
 
 ## Validation
 
