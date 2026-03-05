@@ -41,9 +41,11 @@ shurl https://www.example.com
 
 ### Flags
 
-| Flag         | Description       |
-|--------------|-------------------|
-| `-h, --help` | Print help text   |
+| Flag         | Description                                                         |
+|--------------|---------------------------------------------------------------------|
+| `-h, --help` | Print help text                                                     |
+| `--clean`    | Cleans the URL of common tracking parameters before shortening it   |
+
 
 ## Validation
 

@@ -2,6 +2,7 @@ mod cli;
 mod clipboard;
 mod shortener;
 mod validator;
+mod stripper;
 
 use clap::Parser;
 use cli::Cli;
@@ -25,6 +26,23 @@ fn main() {
             eprintln!("Invalid URL: {}", e);
             std::process::exit(1);
         }
+    };
+
+    let url = if args.clean {
+        match stripper::strip_tracking(&url) {
+            Ok(cleaned) => {
+                println!("Cleaned URL: {}", cleaned);
+                cleaned
+            }
+            Err(e) => {
+                eprintln!("Error cleaning URL: {}", e);
+                std::process::exit(1);
+            }
+        }
+
+    }
+    else {
+        url
     };
 
     match shortener::shorten(&url) {

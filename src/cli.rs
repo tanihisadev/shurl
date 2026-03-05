@@ -9,6 +9,10 @@ pub struct Cli {
     /// The URL to shorten.
     pub url: String,
 
+    /// Strip known tracking parameters from the URL before shortening
+    #[arg(short, long)]
+    pub clean: bool,
+
     /// Do no copy the result to the clipboard
     #[arg(long)]
     pub no_copy: bool,
