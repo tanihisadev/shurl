@@ -46,6 +46,7 @@ shurl https://www.example.com
 | `-h, --help` | Print help text                                                     |
 | `--clean`    | Cleans the URL of common tracking parameters before shortening it   |
 
+
 ## Validation
 
 The shurl command validates input before hitting the API. The URL must:

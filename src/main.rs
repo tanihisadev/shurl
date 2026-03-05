@@ -1,10 +1,21 @@
 mod cli;
+mod clipboard;
 mod shortener;
 mod validator;
 mod stripper;
 
 use clap::Parser;
 use cli::Cli;
+
+fn output(label: &str, url: &str, no_copy: bool) {
+    println!("{}: {}", label, url);
+    if !no_copy {
+        match clipboard::copy_to_clipboard(url) {
+            Ok(_) => println!("Copied to clipboard!"),
+            Err(e) => println!("{}", e),
+        }
+    }
+}
 
 fn main() {
     let args = Cli::parse();
@@ -35,7 +46,7 @@ fn main() {
     };
 
     match shortener::shorten(&url) {
-        Ok(short) => println!("Shortened URL: {}", short),
+        Ok(short) => output("Shortened URL:", &short, args.no_copy),
         Err(e) => eprintln!("Error: {}", e),
     }
 }
