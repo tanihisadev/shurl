@@ -49,6 +49,7 @@ shurl https://www.example.com
 | `--no-copy`     | Disables automatic copying of the result to the clipboard                 |
 | `-V, --version` | Print version                                                             |
 | `-h, --help`    | Print help text                                                           |
+| `-p, --provider`| Choose provider API to use for link shortening
 
 ## Clipboard
 
@@ -71,6 +72,15 @@ The `--embed` flag replaces known domains with embed-friendly alternatives, usef
 
 Note: shortening is skipped when `--embed` is used, as shortened URLs prevent platforms from generating a preview.
 
+# Providers
+
+The `--providers` allows for choosing the API to use for to process and shorten the link.
+
+| Parameter        | 
+|------------------|
+| `isgd` (Default) |
+| `tinyurl`        |
+
 ## Tracking Parameters
 
 The `--clean` flag strips known tracking parameters from the URL before shortening. Recognised parameters include:
@@ -89,13 +99,16 @@ The `--clean` flag strips known tracking parameters from the URL before shorteni
 
 ```
 src/
-├── main.rs        # Entry point, wires everything together
-├── cli.rs         # CLI argument definitions (clap)
-├── shortener.rs   # HTTP logic and API call
-├── embedder.rs    # Embed-friendly domain substitution (--embed)
-├── stripper.rs    # Tracking parameter removal (--clean)
-├── clipboard.rs   # Clipboard support
-└── validator.rs   # URL validation
+├── main.rs           # Entry point, wires everything together
+├── cli.rs            # CLI argument definitions (clap)
+├── embedder.rs       # Embed-friendly domain substitution (--embed)
+├── stripper.rs       # Tracking parameter removal (--clean)
+├── clipboard.rs      # Clipboard support
+├── validator.rs      # URL validation
+└── providers/
+    ├── mod.rs        # Shortener trait definition (--provider)
+    ├── isgd.rs       # is.gd implementation
+    └── tinyurl.rs    # TinyURL implementation
 ```
 
 ## Dependencies
