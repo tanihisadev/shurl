@@ -1,12 +1,14 @@
 mod cli;
 mod clipboard;
 mod embedder;
-mod shortener;
+// mod shortener;
 mod stripper;
 mod validator;
+mod providers;
 
 use clap::Parser;
 use cli::Cli;
+use providers::Shortener;
 
 fn output(label: &str, url: &str, no_copy: bool) {
     println!("{}: {}", label, url);
@@ -61,7 +63,13 @@ fn main() {
         return;
     }
 
-    match shortener::shorten(&url) {
+    let shortener: Box<dyn Shortener> = match args.provider {
+        cli::Provider::Isgd => Box::new(providers::isgd::IsgdShortener),
+        cli::Provider::Tinyurl => Box::new(providers::tinyurl::TinyUrlShortener),
+        
+    };
+
+    match shortener.shorten(&url) {
         Ok(short) => output("Shortened URL", &short, args.no_copy),
         Err(e) => eprintln!("Error: {}", e),
     }
